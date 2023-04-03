@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package tmp.hydrator.nesting;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "tmp/hydrator/nesting";
+
+message Order{
+  string channel = 1;
+  string store_id = 2;
+  string phone_number = 3;
+  string currency = 4;
+  OrderPayload order = 5;
+  string from = 6;
+}
+
+message Item {
+  string id = 1;
+  repeated string image_urls = 2;
+  float price = 3;
+  int32 quantity = 4;
+  string sku = 5;
+  string name = 6;
+  string description = 7;
+  string category = 8;
+  google.protobuf.Timestamp updated_at = 9;
+  google.protobuf.Timestamp created_at = 10;
+  repeated string attributes = 11;
+}
+
+message CheckoutRule {
+  message Delivery {
+    string date = 1;
+    double amount = 2;
+  }
+  message PaymentMethod {
+    string method = 1;
+    double amount = 2;
+  }
+  string type = 1;
+  oneof value {
+    Delivery delivery = 2;
+    PaymentMethod payment_method = 3;
+  }
+}
+
+message OrderPayload {
+  string id = 1;
+  float total = 2;
+  int32 sequence = 3;
+  repeated CheckoutRule checkout_rules = 4;
+  string status = 5;
+  string customer_code = 6;
+  repeated Item items = 7;
+}
